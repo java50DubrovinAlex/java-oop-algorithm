@@ -2,6 +2,8 @@ package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.BeforeEach;
 
 import telran.util.*;
@@ -61,46 +63,7 @@ void setUp() {
 		assertEquals(0, list.indexOf(10));
 		assertEquals(-1, list.indexOf(null));
 	}
-	@Test
-	void testLastIndexOff() {
-		list.add(4, 10);
-		assertEquals(4, list.lastIndexOf(10));
-		assertEquals(-1, list.lastIndexOf(null));
-	}
-	@Test
-	void testRevove() {
-		List <String> list = new ArrayList<>();
-		list.add("apple");
-	    list.add("banana");
-	    list.add("orange");
-	    assertEquals(3, list.size());
-		assertEquals(true, list.remove("banana"));
-		list.remove("orange");
-		assertEquals(1, list.size());
-		String app = list.get(0);
-		assertEquals("apple", app);
-		
-		
-	}
-	@Test
-	void testToArray() {
-		Integer [] array1 = new Integer [6];
-		Integer [] array2 = new Integer [8];
-		Integer [] array3 = new Integer [0];
-		
-		Integer [] newArray1 = list.toArray(array1);
-		assertEquals(6, newArray1.length);
-		assertEquals(10, newArray1[0]);
-		assertEquals(30, newArray1[5]);
-		Integer [] newArray2 = list.toArray(array2);
-		assertEquals(8, newArray2.length);
-		assertEquals(10, newArray2[0]);
-		assertEquals(null, newArray2[7]);
-		Integer [] newArray3 = list.toArray(array3);
-		assertEquals(6, newArray3.length);
-		assertEquals(10, newArray3[0]);
-		assertEquals(30, newArray3[5]);
-	}
+	
 	private void runTest(Integer[] expected) {
 		int size = list.size() ;
 		Integer [] actual = new Integer[expected.length];
@@ -111,6 +74,61 @@ void setUp() {
 		assertArrayEquals(expected, actual);
 		
 	}
+//==============================HW04==========================
+	@Test
+	void testRemovePattern() {
+		int size = list.size();
+		Integer d1 = 7;
+		assertTrue(list.remove(d1));
+		Integer d2 = 22;
+		assertFalse(list.remove(d2));
+		assertEquals(size-1, list.size());
+	}
+	@Test
+	void testLastIndexOf() {
+		// {10, -20, 7, 50, 100, 30}
+		list.add(1, 7);
+		assertEquals(3, list.lastIndexOf(7));
+		list.add(7);
+		assertEquals(7, list.lastIndexOf(7));
+		assertEquals(-1, list.lastIndexOf(null));
+	}
+	@Test
+	void testToArray() {
+		Object a[] = list.toArray();
+		Integer[] expected = Arrays.copyOf(a, a.length, Integer[].class);
+		runTest(expected);
+	}
+//	@Test
+//	void testToArrayBuffer() {
+//		Integer [] buf = new Integer[2];
+//		Integer [] expected = (Integer[])list.toArray(buf);
+//		runTest(expected);
+//		buf = new Integer[12];
+//		expected = (Integer[])list.toArray(buf);
+//		printArray(expected);
+//		runTest(expected);
+//	}
+	@Test
+	void testToArrayBuffer() {
+		Integer[] expectedList = {10, -20, 7, 50, 100, 30};
+		Integer[] expectedSpareSize = {10, -20, 7, 50, 100, 30, null};
+		
+		Integer[]arrListSize = new Integer[list.size()];
+		Integer[] arrLessSize = new Integer[list.size()-1];
+		Integer[] arrSpareSize = new Integer[list.size()+1];
+		for(int i=0; i<list.size()+1; i++) {
+			arrSpareSize[i] = i*2;
+		}
+		assertArrayEquals(expectedList, list.toArray(arrListSize));
+		assertArrayEquals(expectedList, list.toArray(arrLessSize));
+		assertArrayEquals(expectedSpareSize, list.toArray(arrSpareSize));
+	}
+	void printArray(Object[] arr) {
+		for(int i=0; i<arr.length; i++) {
+			System.out.print(arr[i] + " ");
+		}
+		System.out.println(" ");
+	}
 
 }
-

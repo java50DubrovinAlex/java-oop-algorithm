@@ -1,4 +1,4 @@
-package telran.util;
+ package telran.util;
 
 import java.util.Arrays;
 
@@ -57,32 +57,50 @@ public class ArrayList<T> implements List<T> {
 		
 		return size;
 	}
+	private boolean isEqual(T object, T pattern) {
+		
+		return pattern == null ? object == pattern :
+			pattern.equals(object);
+	}
+//=========================HW04===========================
 	@Override
 	public boolean remove(T pattern) {
-		boolean isRemove = false;
-		int removeIndex = this.indexOf(pattern);
-		if(removeIndex > 0) {
-			this.remove(removeIndex);
-			isRemove = true;
+		int index = indexOf(pattern);
+		if(index >= 0) {
+			remove(index);
 		}
-		return isRemove;
+		return index<0 ? false : true;
+	}
+	@Override
+	public T[] toArray() {
+		return Arrays.copyOf(array, size);
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public T[] toArray(T[] array) {
-		
-		if(array.length >= size) {
-				System.arraycopy(this.array, 0, array, 0, array.length);
-			return array;
+	public T[] toArray(T[] buffer) {
+		T[] res = buffer;
+		if(buffer.length < size) {
+			res = (T[]) Arrays.copyOf(array, size);
+		} else {
+			System.arraycopy(array, 0, res, 0, size );
+			if(res.length > size) {
+				res[size] = null;
+			}
 		}
-		else {
-			T[]newArray = Arrays.copyOf(array, size);
-			System.arraycopy(this.array, 0, newArray, 0, size);
-			return newArray;
-		}
-		
-		
+		return res;
 	}
+//	@Override
+//	public T[] toArray(T[] buffer) {
+//		T[] res = buffer;
+//		if(buffer.length < size) {
+//			res =  (T[])new Object[size];
+//		} 
+//		System.arraycopy(array, 0, res, 0, size );
+//		if(res.length > size) {
+//			res[size] = null;
+//		}
+//		return res;
+//	}
 	@Override
 	public int indexOf(T pattern) {
 		int res = -1;
@@ -95,16 +113,11 @@ public class ArrayList<T> implements List<T> {
 		}
 		return res;
 	}
-	private boolean isEqual(T object, T pattern) {
-		
-		return pattern == null ? object == pattern :
-			pattern.equals(object);
-	}
 	@Override
 	public int lastIndexOf(T pattern) {
 		int res = -1;
-		int index = size - 1;
-		while(index > 0 && res == -1) {
+		int index = size-1;
+		while(index >= 0 && res == -1) {
 			if (isEqual(array[index], pattern)) {
 				res = index;
 			}
@@ -112,6 +125,4 @@ public class ArrayList<T> implements List<T> {
 		}
 		return res;
 	}
-
-
 }
