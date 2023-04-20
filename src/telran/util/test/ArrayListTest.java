@@ -3,6 +3,7 @@ package telran.util.test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import org.junit.jupiter.api.BeforeEach;
 
@@ -14,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 class ArrayListTest {
 List<Integer> list;
-Integer[] numbers = {10, -20, 7, 50, 100, 30};
+Integer[] numbers = {10, -20, 7,  30, 50, 100, };
 @BeforeEach
 void setUp() {
 	list = new ArrayList<>(1);
@@ -62,7 +63,7 @@ void setUp() {
 	void testIndexOf() {
 		list.add(3, 10);
 		assertEquals(0, list.indexOf(10));
-		assertEquals(-1, list.indexOf(null));
+		assertEquals(-1, list.indexOf((Integer)null));
 	}
 	
 	private void runTest(Integer[] expected) {
@@ -92,7 +93,7 @@ void setUp() {
 		assertEquals(3, list.lastIndexOf(7));
 		list.add(7);
 		assertEquals(7, list.lastIndexOf(7));
-		assertEquals(-1, list.lastIndexOf(null));
+		assertEquals(-1, list.lastIndexOf((Integer)null));
 	}
 	@Test
 	void testToArray() {
@@ -157,15 +158,33 @@ void setUp() {
 		Person expected[] = {p2, p1, p3};
 		persons.sort(new PersonsAgeComparator());
 		assertArrayEquals(expected,
-				persons.toArray(new Person[3]));
+				persons.toArray(new Person[0]));
 	}
 	@Test
 	void testEvenOddSort() {
-		list.add(17);
-		Integer [] expList = {-20, 10, 30, 50, 100, 17, 7};
-//		Integer [] expList = {-20, 7, 10, 17, 30, 50, 100,};
+		list.add(-17);
+		Integer [] expList = {-20, 10, 30, 50, 100, 7, -17};		
 		list.sort(new EvenOddComparator());
-		assertArrayEquals(expList, list.toArray(new Integer[0]));
+		assertArrayEquals(expList, list.toArray(new Integer[0]));			
+	}
+	
+	@Test
+	void testIndexOfPredicate() {
+		assertEquals(1, list.indexOf(a -> a < 0));
+		assertEquals(-1, list.indexOf(a -> a % 2 < 0 ));
+	}
+	
+	@Test
+	void LastIndexOf(){
+		assertEquals(5, list.lastIndexOf(a -> a == 100));
+		assertEquals(-1, list.lastIndexOf(a -> a == 1000));
+	}
+	@Test
+	void testRemoveIf() {
+		assertTrue(list.removeIf(a -> a == 100));
+		printArray(list.toArray(new Integer[0]));
+		assertFalse(list.removeIf(a -> a == 1000));
+		printArray(list.toArray(new Integer[0]));
 	}
 	void printArray(Object[] arr) {
 		for(int i=0; i<arr.length; i++) {

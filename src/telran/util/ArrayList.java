@@ -2,6 +2,7 @@ package telran.util;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.function.Predicate;
 
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
@@ -83,7 +84,7 @@ public class ArrayList<T> implements List<T> {
 		return Arrays.copyOf(array, size);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public T[] toArray(T[] buffer) {
 		T[] res = buffer;
@@ -136,16 +137,17 @@ public class ArrayList<T> implements List<T> {
 		return res;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void sort() {
-		Arrays.sort(array, 0, size);
-		
+
+		sort((Comparator<T>) Comparator.naturalOrder());
 
 	}
 
 	@Override
 	public void sort(Comparator<T> comp) {
-//		Arrays.sort(array,  0, size, comp);
+
 		boolean isSort = false;
 		int length = size;
 
@@ -163,5 +165,42 @@ public class ArrayList<T> implements List<T> {
 			}
 			length--;
 		}
+	}
+
+	@Override
+	public int indexOf(Predicate<T> predicate) {
+		int res = -1;
+		int index = 0;
+		while (index < size && res == -1) {
+			if (predicate.test(array[index])) {
+				res = index;
+			}
+			index++;
+		}
+		return res;
+	}
+
+	@Override
+	public int lastIndexOf(Predicate<T> predicate) {
+		int res = -1;
+		int index = size - 1;
+		while (index >= 0 && res == -1) {
+			if (predicate.test(array[index])) {
+				res = index;
+			}
+			index--;
+		}
+		return res;
+	}
+
+	@Override
+	public boolean removeIf(Predicate<T> predicate) {
+		boolean isRemove = false;
+		for(int i = 0; i < size; i++) {
+			if(predicate.test(array[i])) {
+				isRemove = remove(array[i]);
+			}
+		}
+		return isRemove;
 	}
 }
