@@ -185,6 +185,12 @@ void setUp() {
 		printArray(list.toArray(new Integer[0]));
 		assertFalse(list.removeIf(a -> a == 1000));
 		printArray(list.toArray(new Integer[0]));
+		assertTrue(list.removeIf(a -> true));
+		ArrayList<Integer> testList = new ArrayList<>();
+		testList.add(2);
+		testList.add(2);
+		assertTrue(testList.removeIf(a -> a == 2));
+		
 	}
 	void printArray(Object[] arr) {
 		for(int i=0; i<arr.length; i++) {

@@ -195,10 +195,18 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
+//		boolean isRemove = false;
+//		for(int i = 0; i < size; i++) {
+//			if(predicate.test(array[i])) {
+//				isRemove = remove(array[i]);
+//			}
+//		}
+//		return isRemove;
 		boolean isRemove = false;
 		for(int i = 0; i < size; i++) {
 			if(predicate.test(array[i])) {
-				isRemove = remove(array[i]);
+				isRemove = true;
+				System.arraycopy(array, i + 1, array, i, size - i -1);
 			}
 		}
 		return isRemove;
