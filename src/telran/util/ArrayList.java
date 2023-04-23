@@ -192,9 +192,10 @@ public class ArrayList<T> implements List<T> {
 		}
 		return res;
 	}
-
+	
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
+//		#1
 //		boolean isRemove = false;
 //		for(int i = 0; i < size; i++) {
 //			if(predicate.test(array[i])) {
@@ -202,13 +203,26 @@ public class ArrayList<T> implements List<T> {
 //			}
 //		}
 //		return isRemove;
-		boolean isRemove = false;
+		
+//     #2		
+//		boolean isRemove = false;
+//		for(int i = 0; i < size; i++) {
+//			if(predicate.test(array[i])) {
+//				isRemove = true;
+//				System.arraycopy(array, i + 1, array, i, size - i -1);
+//			}
+//		}
+//		return isRemove;
+		//#3
+		int index = 0;
 		for(int i = 0; i < size; i++) {
-			if(predicate.test(array[i])) {
-				isRemove = true;
-				System.arraycopy(array, i + 1, array, i, size - i -1);
+			if(!predicate.test(array[i])) {
+				array[index++] = array[i];
 			}
 		}
-		return isRemove;
+		System.out.println("size = " + size + "index + 1= " + (index + 1));
+		boolean isRemoved = size == index ? false : true ;
+		size = index ;
+		return isRemoved ;
 	}
 }
