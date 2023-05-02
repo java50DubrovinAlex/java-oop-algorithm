@@ -1,5 +1,7 @@
 package telran.algorithm;
 
+import java.util.Comparator;
+
 public class InitialAlgorithm {
 	 public static void sortShortPositive(short [] array) {
    	  int [] helper = new int[Short.MAX_VALUE];
@@ -34,21 +36,57 @@ public static boolean isSum2(short[] array, short sum) {
 }
 
 public static short getMaxPositiveWithNegativeReflect(short[] array) {
-	short res = -1;
-	  int [] helper = new int [Short.MAX_VALUE];
+	
+	  boolean [] helperPositiv = new boolean [Short.MAX_VALUE];
+	  boolean [] helperNegativ = new boolean [Short.MAX_VALUE];
+
 	  for(int i = 0; i < array.length; i++) {
 		  if(array[i] < 0) {
-			  array[i] *= -1;
-			  helper[array[i]]++;
-	  }else {
-		  helper[array[i]]++;
-	  }  
-	  }
-	  for(int i = helper.length - 1; i >= 0; i--) {
-		  if(helper[i] == 2) {
-			  return res = (short) i;
+			  helperNegativ[array[i] * -1] = true;
+		  }else {
+			  helperPositiv[array[i]] = true;
 		  }
+		 
 	  }
-	  return res;
+	  for(int i = helperPositiv.length - 1; i >= 0; i--) {
+		  if(helperNegativ[i] == true && helperPositiv[i] == true) {
+			  return (short) i;
+		  }
+		  
+	  }
+	return -1;
+}
+public static <T> int binarySearch(T [] array, T key,
+		Comparator<T> comp) {
+	int leftIndex = 0;
+	int rightIndex = array.length - 1;
+	int middleIndex = rightIndex / 2;
+	int compRes = 0;
+	int keyIndex = 0 ;
+	while(leftIndex <= rightIndex &&
+			((compRes = comp.compare(key, array[middleIndex])) != 0 ||  middleIndex != 0))
+	{
+		if (compRes > 0) {
+			//move to right part of the array
+			if(middleIndex == rightIndex) {
+				keyIndex = middleIndex;
+			}else {
+				keyIndex = comp.compare(key, array[middleIndex + 1]) < 0 ? keyIndex = middleIndex + 1 : 0;
+			}
+			leftIndex = middleIndex + 1;
+		} else {
+			if(middleIndex == leftIndex) {
+				keyIndex = middleIndex;
+			}else {
+				keyIndex = comp.compare(key, array[middleIndex - 1]) > 0 ? keyIndex = middleIndex - 1 : 0;
+			}
+			rightIndex = middleIndex - 1;
+		}
+		if(comp.compare(key, array[middleIndex]) != 0 || comp.compare(key, array[middleIndex - 1]) == 0) {
+			System.out.println("middle index = " + middleIndex + "   keyIndex = " + keyIndex);
+			middleIndex = (leftIndex + rightIndex) / 2;
+		}
+	}
+	return leftIndex > rightIndex && comp.compare(key, array[middleIndex]) != 0 ? ((keyIndex + 1) * -1)  : middleIndex;
 }
 }

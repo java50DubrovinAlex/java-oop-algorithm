@@ -10,20 +10,23 @@ import telran.algorithm.InitialAlgorithm;
 @SuppressWarnings("unused")
 class Tets {
 	
-	short [] tetsArray = {0, 1, 2, 3, 4, 5, 6,};
 	
-	short [] tetsArray1 = {0, 1, 2, 3, 4, 5, 6, -6};
-	
+	Integer [] testArray1 = {2, 2, 2, 2, 2};
+	Integer [] testArray2 = {2, 3, 5, 6};
+	Integer [] testArray3 = {3, 3, 3, 4, 4};
 	
 	@Test
 	void testIsSum2() {
-		assertTrue(InitialAlgorithm.isSum2(tetsArray, (short) 1));
-		assertFalse(InitialAlgorithm.isSum2(tetsArray, (short) 25));
+		
+		assertEquals(0, InitialAlgorithm.binarySearch(testArray1, 2, (a, b) -> a - b));
+		assertEquals(-4, InitialAlgorithm.binarySearch(testArray2, 7, (a, b) -> a - b));
+		assertEquals(-1, InitialAlgorithm.binarySearch(testArray2, 1, (a, b) -> a - b));
+		assertEquals(-3, InitialAlgorithm.binarySearch(testArray2, 4, (a, b) -> a - b));
+		assertEquals(0, InitialAlgorithm.binarySearch(testArray2, 2, (a, b) -> a - b));
+		assertEquals(3, InitialAlgorithm.binarySearch(testArray3, 4, (a, b) -> a - b));
+		assertEquals(0, InitialAlgorithm.binarySearch(testArray3, 3, (a, b) -> a - b));
 	}
-	@Test 
-	void testGetMaxPositiveWithNegativeReflect(){
-		assertEquals(6, InitialAlgorithm.getMaxPositiveWithNegativeReflect(tetsArray1));
-	}
+	
 
 	
 }
