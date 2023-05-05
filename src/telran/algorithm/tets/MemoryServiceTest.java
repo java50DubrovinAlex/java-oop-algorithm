@@ -10,6 +10,7 @@ class MemoryServiceTest {
 	byte[] array;
 	@Test
 	void test() {
+		array = null;
 		int size = MemoryService.getMaxAvailableSize();
 		array = new byte[size];
 		boolean flException = false;

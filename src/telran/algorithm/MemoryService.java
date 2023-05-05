@@ -6,7 +6,7 @@ public class MemoryService {
 		int middleMemory = -1;
 		int leftMemory = 0;
 		while (leftMemory <= rightMemory) {
-			middleMemory = ((rightMemory - leftMemory) / 2) + leftMemory;
+			middleMemory = rightMemory / 2 - leftMemory / 2 + leftMemory;
 			try {
 				
 				byte[] array = new byte[middleMemory];
