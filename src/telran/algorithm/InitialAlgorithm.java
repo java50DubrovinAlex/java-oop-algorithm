@@ -83,7 +83,6 @@ public static <T> int binarySearch(T [] array, T key,
 			rightIndex = middleIndex - 1;
 		}
 		if(comp.compare(key, array[middleIndex]) != 0 || comp.compare(key, array[middleIndex - 1]) == 0) {
-			System.out.println("middle index = " + middleIndex + "   keyIndex = " + keyIndex);
 			middleIndex = (leftIndex + rightIndex) / 2;
 		}
 	}
