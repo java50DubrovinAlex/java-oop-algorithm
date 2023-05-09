@@ -38,6 +38,10 @@ public class ArrayList<T> implements List<T> {
 		if (size == array.length) {
 			reallocate();
 		}
+		
+		if(index < 0 || index > size) {
+			throw new IndexOutOfBoundsException(index);
+		}
 		System.arraycopy(array, index, array, index + 1, size - index);
 		array[index] = obj;
 		size++;
@@ -46,7 +50,9 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public T remove(int index) {
 		T res = array[index];
-
+		if(index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException(index);
+		}
 		System.arraycopy(array, index + 1, array, index, size - index - 1);
 		size--;
 		return res;
@@ -54,6 +60,9 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public T get(int index) {
+		if(index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException(index);
+		}
 		T res = array[index];
 		return res;
 	}
@@ -64,53 +73,30 @@ public class ArrayList<T> implements List<T> {
 		return size;
 	}
 
-	private boolean isEqual(T object, T pattern) {
-
-		return pattern == null ? object == pattern : pattern.equals(object);
-	}
-
-//=========================HW04===========================
 	@Override
 	public boolean remove(T pattern) {
+		boolean res = false;
 		int index = indexOf(pattern);
-		if (index >= 0) {
+		if (index > -1) {
+			res = true;
 			remove(index);
-		}
-		return index < 0 ? false : true;
-	}
-
-	@Override
-	public T[] toArray() {
-		return Arrays.copyOf(array, size);
-	}
-
-	
-	@Override
-	public T[] toArray(T[] buffer) {
-		T[] res = buffer;
-		if (buffer.length < size) {
-			res = (T[]) Arrays.copyOf(array, size);
-		} else {
-			System.arraycopy(array, 0, res, 0, size);
-			if (res.length > size) {
-				res[size] = null;
-			}
 		}
 		return res;
 	}
 
-//	@Override
-//	public T[] toArray(T[] buffer) {
-//		T[] res = buffer;
-//		if(buffer.length < size) {
-//			res =  (T[])new Object[size];
-//		} 
-//		System.arraycopy(array, 0, res, 0, size );
-//		if(res.length > size) {
-//			res[size] = null;
-//		}
-//		return res;
-//	}
+	@Override
+	public T[] toArray(T[] ar) {
+		if (ar.length < size) {
+			ar = Arrays.copyOf(ar, size);
+		}
+		System.arraycopy(array, 0, ar, 0, size);
+		if (ar.length > size) {
+			ar[size] = null;
+		}
+
+		return ar;
+	}
+
 	@Override
 	public int indexOf(T pattern) {
 		int res = -1;
@@ -122,6 +108,11 @@ public class ArrayList<T> implements List<T> {
 			index++;
 		}
 		return res;
+	}
+
+	private boolean isEqual(T object, T pattern) {
+
+		return pattern == null ? object == pattern : pattern.equals(object);
 	}
 
 	@Override
@@ -137,34 +128,36 @@ public class ArrayList<T> implements List<T> {
 		return res;
 	}
 
+	//@SuppressWarnings("unchecked")
 	@SuppressWarnings("unchecked")
 	@Override
 	public void sort() {
-
-		sort((Comparator<T>) Comparator.naturalOrder());
-
+		sort((Comparator<T>)Comparator.naturalOrder());
+		
 	}
 
 	@Override
 	public void sort(Comparator<T> comp) {
-
-		boolean isSort = false;
-		int length = size;
-
-		while (isSort == false) {
-
-			for (int i = 1; i < length; i++) {
-				isSort = true;
-				if (comp.compare(array[i - 1], array[i]) > 0) {
-					T temp = array[i - 1];
-					array[i - 1] = array[i];
-					array[i] = temp;
-					isSort = false;
+		int n = size;
+		boolean flUnSort = true;
+		do {
+			flUnSort = false;
+			n--;
+			for(int i = 0; i < n; i++) {
+				if (comp.compare(array[i], array[i + 1]) > 0) {
+					swap(i);
+					flUnSort = true;
 				}
-
 			}
-			length--;
-		}
+		}while(flUnSort);
+		
+	}
+
+	private void swap(int i) {
+		T tmp = array[i];
+		array[i] = array[i + 1];
+		array[i + 1] = tmp;
+		
 	}
 
 	@Override
@@ -192,37 +185,30 @@ public class ArrayList<T> implements List<T> {
 		}
 		return res;
 	}
-	
+
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-//		#1
-//		boolean isRemove = false;
-//		for(int i = 0; i < size; i++) {
+		int oldSize = size;
+//		int i = 0;
+//		while(i < size) {
 //			if(predicate.test(array[i])) {
-//				isRemove = remove(array[i]);
+//				remove(i);
+//			} else {
+//				i++;
 //			}
 //		}
-//		return isRemove;
-		
-//     #2		
-//		boolean isRemove = false;
-//		for(int i = 0; i < size; i++) {
-//			if(predicate.test(array[i])) {
-//				isRemove = true;
-//				System.arraycopy(array, i + 1, array, i, size - i -1);
-//			}
-//		}
-//		return isRemove;
-		//#3
-		int index = 0;
-		for(int i = 0; i < size; i++) {
-			if(!predicate.test(array[i])) {
-				array[index++] = array[i];
-			}
+		for(int i = size - 1; i >= 0; i--) {
+			if(predicate.test(array[i])) {
+				remove(i);
+			} 
 		}
-		System.out.println("size = " + size + "index + 1= " + (index + 1));
-		boolean isRemoved = size == index ? false : true ;
-		size = index ;
-		return isRemoved ;
+		return oldSize > size;
 	}
+
+	@Override
+	public T[] toArray() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
