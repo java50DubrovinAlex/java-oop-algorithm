@@ -54,6 +54,7 @@ public class ArrayList<T> implements List<T> {
 		T res = array[index];
 		System.arraycopy(array, index + 1, array, index, size - index - 1);
 		size--;
+		array[size] = null;
 		return res;
 	}
 
@@ -204,10 +205,5 @@ public class ArrayList<T> implements List<T> {
 		return oldSize > size;
 	}
 
-	@Override
-	public T[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

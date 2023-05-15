@@ -13,5 +13,5 @@ void sort();
 void sort(Comparator<T> comp);
 int indexOf(Predicate<T> predicate);
 int lastIndexOf(Predicate<T> predicat);
-boolean removeIf(Predicate<T> predicat);
+
 }
