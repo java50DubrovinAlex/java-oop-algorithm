@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import telran.util.Collection;
 
 public abstract class CollectionTest {
-//TODO move tests of interface collection methods (5 methods) from ListTest
-//	to here
 	private static final int BIG_LENGTH = 100000;
 	protected Integer[] numbers = {10, -20, 7, 50, 100, 30};
 	protected Collection<Integer> collection;
@@ -67,8 +65,10 @@ public abstract class CollectionTest {
 			bigArray[i] = 10;
 		}
 		Integer actualArray[] = collection.toArray(bigArray);
+		System.out.println(actualArray[0]);
 		int size = collection.size();
 		for(int i = 0; i < size; i++) {
+			System.out.println("nums = " + numbers[i] + "   actual = "+ actualArray[i]);
 			assertEquals(numbers[i], actualArray[i]);
 		}
 		assertNull(actualArray[size]);
@@ -79,13 +79,12 @@ public abstract class CollectionTest {
 		Integer actualArray[] =
 				collection.toArray(new Integer[0]);
 		assertArrayEquals(numbers, actualArray);
+		
 	}
 	
 	
-	private void runTest(Integer[] expected) {
-		Integer [] actual = new Integer[expected.length];
-		collection.toArray(actual);
-		
+	protected void runTest(Integer[] expected) {
+		Integer [] actual = collection.toArray(new Integer[collection.size()]);
 		assertArrayEquals(expected, actual);
 		
 	}
