@@ -9,14 +9,10 @@ public class LinkedList<T> implements List<T> {
 	Node<T> head;
 	Node<T> tail;
 	int size;
-	int min;
-	int max;
 private class LinkedListIterator implements Iterator<T> {
 	Node<T> current = head;
 	private int currentIndex;
-	public LinkedListIterator() {
-        currentIndex = 0;
-    }
+
 	@Override
 	public boolean hasNext() {
 		
@@ -105,17 +101,6 @@ private class LinkedListIterator implements Iterator<T> {
 	    }
 
 	}
-//	private T[] toArray() {
-//		@SuppressWarnings("unchecked")
-//		T[] array = (T[]) new Object[size];
-//	    Node<T> current = head;
-//	    int index = 0;
-//	    while(current != null) {
-//	    	array[index++] = current.obj;
-//	    	current = current.next;
-//	    }
-//	    return array;
-//	}
 	@Override
 	public int indexOf(Predicate<T> predicate) {
 		int index = 0;

@@ -11,9 +11,8 @@ public class ArrayList<T> implements List<T> {
 	private int size;
 private class ArrayListIterator implements Iterator<T> {
 	private int currentIndex;
-	public ArrayListIterator() {
-        currentIndex = 0;
-    }
+	
+	@Override
 	public boolean hasNext() {
 		
 		return currentIndex < size;
